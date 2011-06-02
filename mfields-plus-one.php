@@ -14,6 +14,7 @@ Mfields_Plus_One::init();
 /**
  * Mfields Plus One
  *
+ * @todo       Add setting during activation.
  * @todo       Load text domain.
  * @todo       Actually do something with language option.
  * @todo       More Testing.
