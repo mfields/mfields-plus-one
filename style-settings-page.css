@@ -1,0 +1,43 @@
+#settings_page_mfields_plus_one label {
+	display:block;
+}
+#mfields_plus_one_size_wrap {
+	position:relative;
+}
+#mfields_plus_one_preview {
+	width:80px;
+	height:60px;
+	background-color:#eee;
+	border-radius:5px;
+	border:1px solid #ddd;
+	padding:5px;
+	position:absolute;
+	top:0;
+	left:200px;
+}
+#mfields_plus_one_preview div {
+	width:80px;
+	height:60px;
+	background:transparent url( 'preview-sprite.png' ) 0 -60px no-repeat;
+}
+#mfields_plus_one_preview div.small {
+	background-position:-480px 0;
+}
+#mfields_plus_one_preview div.small.count {
+	background-position:-400px 0;
+}
+#mfields_plus_one_preview div.medium {
+	background-position:-320px 0;
+}
+#mfields_plus_one_preview div.medium.count {
+	background-position:-240px 0;
+}
+#mfields_plus_one_preview div.standard {
+	background-position:-160px 0;
+}
+#mfields_plus_one_preview div.standard.count {
+	background-position:-80px 0;
+}
+#mfields_plus_one_preview div.tall {
+	background-position:0 0;
+}
