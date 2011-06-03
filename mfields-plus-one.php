@@ -14,7 +14,6 @@ Mfields_Plus_One::init();
 /**
  * Mfields Plus One
  *
- * @todo       Load text domain.
  * @todo       Readme file.
  * @todo       Docs.
  * @todo       Release.
@@ -35,6 +34,7 @@ class Mfields_Plus_One {
 	 */
 	static function init() {
 		register_activation_hook( __FILE__, array( __class__, 'activate' ) );
+		add_action( 'init', array( __class__, 'load_textdomain' ) );
 		add_action( 'init', array( __class__, 'register_enqueueables' ) );
 		add_action( 'admin_menu', array( __class__, 'settings_menu' ),    10 );
 		add_action( 'admin_menu', array( __class__, 'settings_enqueue' ), 11 );
@@ -50,13 +50,23 @@ class Mfields_Plus_One {
 	 * An entry in the options table will created when this plugin
 	 * is activated in the event that it does not already exist.
 	 *
-	 * @since     2011-06-02
+	 * @since     2011-06-03
 	 * @access    private
 	 */
 	function activate() {
 		if ( false === get_option( 'mfields_plus_one' ) ) {
 			add_option( 'mfields_plus_one', self::get_defaults() );
 		}
+	}
+
+	/**
+	 * Load Text Domain.
+	 *
+	 * @since      2011-06-03
+	 * @access     private
+	 */
+	function load_textdomain() {
+		load_plugin_textdomain( 'mfields_plus_one', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
