@@ -118,7 +118,7 @@ class Mfields_Plus_One {
 		foreach( $atts as $key => $value ) {
 			$attributes .= ' ' . $key . '="' . $value . '"';
 		}
-		print "\n" . '<script ' . $attributes . '>{lang: "' . esc_html( $settings['language'] ) . '"}</script>' . "/n";
+		print "\n" . '<script' . $attributes . '>{lang: "' . esc_html( $settings['language'] ) . '"}</script>' . "\n";
 	}
 
 	/**
