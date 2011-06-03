@@ -466,11 +466,12 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_language() {
-		$settings = get_option( 'mfields_plus_one' );
-		$languages = self::get_languages();
-		print "\n" . '<select name="mfields_plus_one[language]">';
-		foreach( $languages as $key => $value ) {
-			print "\n" . '<option' . selected( $settings['language'], $key ) . ' value="' . esc_attr( $key ) . '">' . esc_html( $value ) . '</option>';
+		$key = 'language';
+		$saved = self::get_setting( $key );
+
+		print "\n" . '<select name="mfields_plus_one[' . $key . ']">';
+		foreach( self::get_languages() as $code => $label ) {
+			print "\n" . '<option' . selected( $saved, $code ) . ' value="' . esc_attr( $code ) . '">' . esc_html( $label ) . '</option>';
 		}
 		print "\n" . '</select>';
 	}
@@ -482,29 +483,33 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_markup() {
-		$setting = self::get_settings();
+		$key = 'markup';
+		$saved = self::get_setting( $key );
 
-		$id = 'mfields_plus_one_markup_html';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $setting['markup'], 'html', false ) . ' id="' . esc_attr( $id ) . '" type="radio" name="mfields_plus_one[markup]" value="html" /> ' . __( 'html', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_' . $key . '_html';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'html', false ) . ' id="' . esc_attr( $id ) . '" type="radio" name="mfields_plus_one[' . $key . ']" value="html" /> ' . __( 'html', self::$domain ) . '</label>';
 
-		$id = 'mfields_plus_one_markup_xhtml';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $setting['markup'], 'xhtml', false ) . ' id="' . esc_attr( $id ) . '" type="radio" name="mfields_plus_one[markup]" value="xhtml" /> ' . __( 'xhtml', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_' . $key . '_xhtml';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'xhtml', false ) . ' id="' . esc_attr( $id ) . '" type="radio" name="mfields_plus_one[' . $key . ']" value="xhtml" /> ' . __( 'xhtml', self::$domain ) . '</label>';
 	}
 
 	/**
 	 * Display Count UI.
 	 *
+	 * @todo Rename 'show_count' tp "count" and use dynamic value for class names.
+	 *
 	 * @since      2011-06-02
 	 * @access     private
 	 */
 	static function control_count() {
-		$setting = self::get_settings();
+		$key = 'show_count';
+		$saved = self::get_setting( $key );
 
 		$id = 'mfields_plus_one_count_true';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $setting['show_count'], 'true', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[show_count]" value="true" /> ' . __( 'Yes', self::$domain ) . '</label>';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'true', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="true" /> ' . __( 'Yes', self::$domain ) . '</label>';
 
 		$id = 'mfields_plus_one_count_false';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $setting['show_count'], 'false', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[show_count]" value="false" /> ' . __( 'No', self::$domain ) . '</label>';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'false', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="false" /> ' . __( 'No', self::$domain ) . '</label>';
 	}
 
 	/**
@@ -514,15 +519,15 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_size() {
-		$setting = self::get_settings();
-		$value = $setting['size'];
-		print '<div id="mfields_plus_one_size_wrap">';
+		$key = 'size';
+		$saved = self::get_setting( $key );
+		print '<div id="mfields_plus_one_' . $key . '_wrap">';
 		foreach ( self::get_sizes() as $size => $label ) {
-			$id = 'mfields_plus_one_size_' . $size;
-			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $size, $value, false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_size" name="mfields_plus_one[size]" value="' . esc_attr( $size ) . '" /> ' . esc_html( $label ) . '</label>';
+			$id = 'mfields_plus_one_' . $key . '_' . $size;
+			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $size, $saved, false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_' . $key . '" name="mfields_plus_one[' . $key . ']" value="' . esc_attr( $size ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
-		$count = ( 'true' == $setting['show_count'] ) ? ' count' : '';
-		print '<div id="' . esc_attr( self::$domain . '_preview' ) . '"><div class="' . esc_attr( $setting['size'] . $count ) . '"></div></div>';
+		$count = ( 'true' == self::get_setting( 'show_count' ) ) ? ' count' : '';
+		print '<div id="' . esc_attr( self::$domain . '_preview' ) . '"><div class="' . esc_attr( $saved . $count ) . '"></div></div>';
 		print '</div>';
 	}
 
@@ -533,12 +538,12 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_singular() {
-		$setting = self::get_settings();
-		$value = $setting['singular'];
+		$key = 'singular';
+		$saved = self::get_setting( $key );
 		foreach ( self::get_locations_singular() as $location => $label ) {
-			$id = 'mfields_plus_one_singular_' . $location;
-			$checked = ( in_array( $location, $value ) ) ? ' checked="checked"' : '';
-			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[singular][]" value="' . esc_attr( $location ) . '" /> ' . esc_html( $label ) . '</label>';
+			$id = 'mfields_plus_one_' . $key . '_' . $location;
+			$checked = ( in_array( $location, $saved ) ) ? ' checked="checked"' : '';
+			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[' . $key . '][]" value="' . esc_attr( $location ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
 	}
 
@@ -549,12 +554,12 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_multiple() {
-		$setting = self::get_settings();
-		$value = $setting['multiple'];
+		$key = 'multiple';
+		$saved = self::get_setting( $key );
 		foreach ( self::get_locations_multiple() as $location => $label ) {
-			$id = 'mfields_plus_one_multiple_' . $location;
-			$checked = ( in_array( $location, $value ) ) ? ' checked="checked"' : '';
-			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[multiple][]" value="' . esc_attr( $location ) . '" /> ' . esc_html( $label ) . '</label>';
+			$id = 'mfields_plus_one_' . $key . '_' . $location;
+			$checked = ( in_array( $location, $saved ) ) ? ' checked="checked"' : '';
+			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[' . $key . '][]" value="' . esc_attr( $location ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
 	}
 
@@ -565,12 +570,12 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function control_post_types() {
-		$setting = self::get_settings();
-		$value = $setting['post_types'];
+		$key = 'post_types';
+		$saved = self::get_setting( $key );
 		foreach ( self::get_post_types() as $post_type => $label ) {
-			$id = 'mfields_plus_one_post_types_' . $post_type;
-			$checked = ( in_array( $post_type, $value ) ) ? ' checked="checked"' : '';
-			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[post_types][]" value="' . esc_attr( $post_type ) . '" /> ' . esc_html( $label ) . '</label>';
+			$id = 'mfields_plus_one_' . $key . '_' . $post_type;
+			$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
+			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="mfields_plus_one[' . $key .'][]" value="' . esc_attr( $post_type ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
 	}
 
@@ -582,6 +587,27 @@ class Mfields_Plus_One {
 	 */
 	static function get_settings() {
 		return wp_parse_args( (array) get_option( 'mfields_plus_one' ), self::get_defaults() );
+	}
+
+	/**
+	 * Get Setting.
+	 *
+	 * Gets and individual key stored in the custom settings array.
+	 * In the event that an unrecognized key is asked for, boolean
+	 * false will be returned.
+	 *
+	 * @param      string       Key as stored
+	 * @return     mixed
+	 *
+	 * @since      2011-06-02
+	 * @access     private
+	 */
+	static function get_setting( $key ) {
+		$settings = self::get_settings();
+		if ( isset( $settings[$key] ) ) {
+			return $settings[$key];
+		}
+		return false;
 	}
 
 	/**
