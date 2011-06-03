@@ -14,7 +14,6 @@ Mfields_Plus_One::init();
 /**
  * Mfields Plus One
  *
- * @todo       Add setting during activation.
  * @todo       Load text domain.
  * @todo       Readme file.
  * @todo       Docs.
@@ -35,6 +34,7 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function init() {
+		register_activation_hook( __FILE__, array( __class__, 'activate' ) );
 		add_action( 'init', array( __class__, 'register_enqueueables' ) );
 		add_action( 'admin_menu', array( __class__, 'settings_menu' ),    10 );
 		add_action( 'admin_menu', array( __class__, 'settings_enqueue' ), 11 );
@@ -42,6 +42,21 @@ class Mfields_Plus_One {
 		add_action( 'template_redirect', array( __class__, 'integrate_singular' ) );
 		add_action( 'template_redirect', array( __class__, 'integrate_multiple' ) );
 		add_action( 'wp_footer', array( __class__, 'script_public' ) );
+	}
+
+	/**
+	 * Activation.
+	 *
+	 * An entry in the options table will created when this plugin
+	 * is activated in the event that it does not already exist.
+	 *
+	 * @since     2011-06-02
+	 * @access    private
+	 */
+	function activate() {
+		if ( false === get_option( 'mfields_plus_one' ) ) {
+			add_option( 'mfields_plus_one', self::get_defaults() );
+		}
 	}
 
 	/**
