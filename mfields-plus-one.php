@@ -461,7 +461,7 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function message_theme_integration() {
-		print sprintf( esc_html__( 'The following settings enable you to automatically add +1 buttons at different places in your theme. To disable automatic theme intgration, just leave these settings unchecked. You will need to use the %1$s action to display the button in your theme.', self::$domain ), '<code>plus-one-button</code>' );
+		print sprintf( esc_html__( 'The following settings enable you to automatically add +1 buttons at different places in your theme. To disable automatic theme intgration, just leave these settings unchecked. You will need to use the %1$s action to display the button in your theme.', self::$domain ), '<code>mfields-plus-one-button</code>' );
 	}
 
 	/**
