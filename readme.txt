@@ -1,4 +1,4 @@
-===Plus One Button===
+===Google Plus One Button===
 
 Contributors:         mfields
 Donate link:          http://wordpress.mfields.org/donate/
