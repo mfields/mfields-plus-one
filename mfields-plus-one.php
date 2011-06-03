@@ -42,6 +42,7 @@ class Mfields_Plus_One {
 		add_action( 'template_redirect', array( __class__, 'integrate_singular' ) );
 		add_action( 'template_redirect', array( __class__, 'integrate_multiple' ) );
 		add_action( 'wp_footer', array( __class__, 'script_public' ) );
+		add_action( 'mfields-plus-one-button', array( __class__, 'button_print' ) );
 	}
 
 	/**
@@ -214,49 +215,72 @@ class Mfields_Plus_One {
 	/**
 	 * Generate a button.
 	 *
+	 * Recognized Arguments
+	 *
+	 * count (string) - Either "true" or "false".
+	 * markup (string) - Either "html" or "xhtml".
+	 * size (string) - Either "small", "medium", "standard" or "tall".
+	 * url (string) - The url to send to Google.
+	 *
+	 * @param      array        Arguments to customize the button.
+	 *
 	 * @since      2011-06-02
 	 * @access     private
 	 */
-	static function button() {
-		$settings = self::get_settings();
-		$markup = $settings['markup'];
+	static function button( $args = array() ) {
+		$url = esc_url( get_permalink() );
+		if ( isset( $args['url'] ) ) {
+			$url = esc_url( $args['url'] );
+		}
 
 		$atts = array(
-			'xhtml' => array(
-				'href'  => esc_url( get_permalink() ),
-				),
 			'html' => array(
-				'class' => 'g-plusone',
-				'data-href'  => esc_url( get_permalink() ),
+				'class'      => 'g-plusone',
+				'data-href'  => $url,
 				),
-			
+			'xhtml' => array(
+				'href'  => $url,
+				),
 			);
 
-		if ( isset( $settings['size'] ) ) {
-			$atts['xhtml']['size'] = $settings['size'];
-			$atts['html']['data-size'] = $settings['size'];
+		$settings = self::get_settings();
+
+		$size = $settings['size'];
+		if ( isset( $args['size'] ) && array_key_exists( $args['size'], self::get_sizes() ) ) {
+			$size = $args['size'];
 		}
 
-		if ( isset( $settings['show_count'] ) ) {
-			$atts['xhtml']['count'] = $settings['show_count'];
-			$atts['html']['count'] = $settings['show_count'];
-			/*
-			This should be the correct attribute but does not seem to be working
-			at the moment. Revist in the future.
-			$atts['html']['data-count'] = $settings['show_count'];
-			*/
+		$atts['xhtml']['size'] = $size;
+		$atts['html']['data-size'] = $size;
+
+		$count = $settings['show_count'];
+		if ( isset( $args['count'] ) && array_key_exists( $args['count'], self::get_counts() ) ) {
+			$count = $args['count'];
 		}
 
-		if ( in_array( $markup, array_keys( $atts ) ) ) {
-			$attributes = '';
-			foreach ( $atts[$markup] as $name => $value ) {
-				$attributes .= ' ' . $name . '="' .  esc_attr( $value ). '"';
-			}
-			if ( 'html' == $markup ) {
-				return sprintf( '<div%s></div>', $attributes );
-			}
-			return sprintf( '<g:plusone%s></g:plusone>', $attributes );
+		$atts['xhtml']['count'] = $count;
+		$atts['html']['count'] = $count;
+
+		/*
+		This should be the correct attribute but does not seem to be working
+		at the moment. Revist in the future.
+		$atts['html']['data-count'] = $settings['show_count'];
+		*/
+
+		$markup = $settings['markup'];
+		if ( isset( $args['markup'] ) && in_array( $args['markup'], array( 'html', 'xhtml' ) ) ) {
+			$markup = $args['markup'];
 		}
+
+		$attributes = '';
+		foreach ( $atts[$markup] as $name => $value ) {
+			$attributes .= ' ' . $name . '="' .  esc_attr( $value ). '"';
+		}
+
+		if ( 'html' == $markup ) {
+			return sprintf( '<div%s></div>', $attributes );
+		}
+		return sprintf( '<g:plusone%s></g:plusone>', $attributes );
 	}
 
 	/**
@@ -265,8 +289,8 @@ class Mfields_Plus_One {
 	 * @since      2011-06-02
 	 * @access     private
 	 */
-	static function button_print() {
-		print self::button();
+	static function button_print( $args = array() ) {
+		print "\n" . self::button( $args );
 	}
 
 	/**
