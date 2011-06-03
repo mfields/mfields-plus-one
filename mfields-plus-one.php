@@ -16,14 +16,8 @@ Mfields_Plus_One::init();
  *
  * @todo       Add setting during activation.
  * @todo       Load text domain.
- * @todo       Actually do something with language option.
- * @todo       More Testing.
  * @todo       Readme file.
  * @todo       Docs.
- * @todo       Release.
- * @todo       Fix bugs.
- * @todo       Release.
- * @todo       Fix mpre bugs.
  * @todo       Release.
  *
  * @since      2011-06-02
@@ -47,7 +41,7 @@ class Mfields_Plus_One {
 		add_action( 'admin_init', array( __class__, 'settings_register' ) );
 		add_action( 'template_redirect', array( __class__, 'integrate_singular' ) );
 		add_action( 'template_redirect', array( __class__, 'integrate_multiple' ) );
-		add_action( 'wp_print_scripts', array( __class__, 'script_public' ) );
+		add_action( 'wp_footer', array( __class__, 'script_public' ) );
 	}
 
 	/**
@@ -57,7 +51,6 @@ class Mfields_Plus_One {
 	 * @access     private
 	 */
 	static function register_enqueueables() {
-		wp_register_script( 'mfields-plus-one', 'https://apis.google.com/js/plusone.js', array(), self::$version, true );
 		wp_register_script( 'mfields-plus-one-settings', plugin_dir_url( __FILE__ ) . 'style-settings-page.js', array( 'jquery' ), self::$version, true );
 		wp_register_style( 'mfields-plus-one-settings', plugin_dir_url( __FILE__ ) . 'style-settings-page.css', array(), self::$version, 'screen' );
 	}
@@ -76,14 +69,31 @@ class Mfields_Plus_One {
 	/**
 	 * Public Scripts.
 	 *
+	 * Prints the required script tag to a public-facing page.
+	 * Language property will be added via stored settings.
+	 * "Type" attribute will only be printed if user has explicity
+	 * chosen "xhtml" as markup type. Unfortunately we were not able
+	 * to use the WordPress script API to load this due to the presence
+	 * of the language attribute.
+	 *
 	 * @since      2011-06-02
 	 * @access     private
 	 */
 	static function script_public() {
-		if ( is_admin() ) {
-			return;
+		$settings = self::get_settings();
+		$atts = array(
+			'src'  => 'https://apis.google.com/js/plusone.js',
+			);
+
+		if ( 'xhtml' == $settings['markup'] ) {
+			$atts['type'] = 'text/javascript';
 		}
-		wp_enqueue_script( 'mfields-plus-one' );
+
+		$attributes = '';
+		foreach( $atts as $key => $value ) {
+			$attributes .= ' ' . $key . '="' . $value . '"';
+		}
+		print "\n" . '<script ' . $attributes . '>{lang: "' . esc_html( $settings['language'] ) . '"}</script>' . "/n";
 	}
 
 	/**
