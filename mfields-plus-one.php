@@ -223,7 +223,7 @@ class Mfields_Plus_One {
 
 		$atts = array(
 			'xhtml' => array(
-				'data-href'  => esc_url( get_permalink() ),
+				'href'  => esc_url( get_permalink() ),
 				),
 			'html' => array(
 				'class' => 'g-plusone',
