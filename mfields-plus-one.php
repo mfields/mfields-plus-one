@@ -719,6 +719,21 @@ class Mfields_Plus_One {
 	}
 
 	/**
+	 * Count Settings.
+	 *
+	 * @return     array     List of supported count settings.
+	 *
+	 * @since      2011-06-03
+	 * @access     private
+	 */
+	static function get_counts() {
+		return array(
+			'true'  => __( 'Yes', self::$domain ),
+			'false' => __( 'No', self::$domain ),
+			);
+	}
+
+	/**
 	 * Singular Locations.
 	 *
 	 * @return     array     List of supported theme locations.
