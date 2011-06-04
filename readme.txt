@@ -132,5 +132,8 @@ Development of this plugin is hosted in a public repository on [Github](https://
 
 ==Changelog==
 
+= 0.1.1 =
+* HTML attribute fix for "size" - dropping "data-" prefix.
+
 = 0.1 =
 * Original Release -> works with WordPress 3.1.
