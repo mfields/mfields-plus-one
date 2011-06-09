@@ -282,10 +282,12 @@ class Mfields_Plus_One {
 			$attributes .= ' ' . $name . '="' .  esc_attr( $value ). '"';
 		}
 
+		$button = sprintf( '<g:plusone%s></g:plusone>', $attributes );
 		if ( 'html' == $markup ) {
-			return sprintf( '<div%s></div>', $attributes );
+			$button = sprintf( '<div%s></div>', $attributes );
 		}
-		return sprintf( '<g:plusone%s></g:plusone>', $attributes );
+
+		return '<div class="' . esc_attr( $settings['alignment'] ) . '">' . $button . '</div>';
 	}
 
 	/**
@@ -447,6 +449,13 @@ class Mfields_Plus_One {
 			'mfields_plus_one',
 			'mfields_plus_one_theme_integration'
 			);
+		add_settings_field(
+			'mfields_plus_one_alignment',
+			__( 'Alignment', self::$domain ),
+			array( __class__, 'control_alignment' ),
+			'mfields_plus_one',
+			'mfields_plus_one_theme_integration'
+			);
 	}
 
 	/**
@@ -561,6 +570,22 @@ class Mfields_Plus_One {
 	}
 
 	/**
+	 * Button Alignment UI.
+	 *
+	 * @since      2011-06-08
+	 * @access     private
+	 */
+	static function control_alignment() {
+		$key = 'alignment';
+		$saved = self::get_setting( $key );
+		print '<div id="mfields_plus_one_' . $key . '_wrap">';
+		foreach ( self::get_alignments() as $alignment => $label ) {
+			$id = 'mfields_plus_one_' . $key . '_' . $alignment;
+			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $alignment, $saved, false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_' . $key . '" name="mfields_plus_one[' . $key . ']" value="' . esc_attr( $alignment ) . '" /> ' . esc_html( $label ) . '</label>';
+		}
+	}
+
+	/**
 	 * Singular Template UI.
 	 *
 	 * @since      2011-06-02
@@ -647,6 +672,7 @@ class Mfields_Plus_One {
 	 */
 	static function settings_sanitize( $dirty ) {
 		$clean = array(
+			'alignment'  => 'none',
 			'language'   => '',
 			'show_count' => 'true',
 			'size'       => '',
@@ -670,6 +696,10 @@ class Mfields_Plus_One {
 
 		if ( isset( $dirty['size'] ) && array_key_exists( $dirty['size'], self::get_sizes() ) ) {
 			$clean['size'] = $dirty['size'];
+		}
+
+		if ( isset( $dirty['alignment'] ) && array_key_exists( $dirty['alignment'], self::get_alignments() ) ) {
+			$clean['alignment'] = $dirty['alignment'];
 		}
 
 		if ( isset( $dirty['singular'] ) ) {
@@ -712,6 +742,7 @@ class Mfields_Plus_One {
 	 */
 	static function get_defaults() {
 		return array(
+			'alignment'  => 'none',
 			'language'   => 'en-US',
 			'markup'     => 'html',
 			'multiple'   => array(),
@@ -745,6 +776,21 @@ class Mfields_Plus_One {
 			$public[$post_type] = $obj->labels->singular_name;
 		}
 		return $public;
+	}
+
+	/**
+	 * Get Alignments.
+	 *
+	 * @since      2011-06-08
+	 * @access     private
+	 */
+	static function get_alignments() {
+		return array(
+			'none'        => __( 'None', self::$domain ),
+			'alignleft'   => __( 'Left', self::$domain ),
+			'aligncenter' => __( 'Center', self::$domain ),
+			'alignright'  => __( 'Right', self::$domain ),
+			);
 	}
 
 	/**
