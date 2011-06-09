@@ -128,6 +128,15 @@ Installation
 Changelog
 ---------
 
+= 0.1.2 =
+
+* Fix double button bug.
+* Add global option for button alignment.
+
+= 0.1.1 =
+
+* HTML attribute fix for "size" - dropping "data-" prefix.
+
 = 0.1 =
 
 * Original Release -> works with WordPress 3.1.

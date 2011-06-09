@@ -31,9 +31,9 @@ If you find that the automatic options are limiting in any way, you can un-selec
  * Should be used inside The Loop.
  */
 do_action( 'mfields-plus-one-button' );
+`
 
-
-
+`
 /**
  * Small button with count.
  */
@@ -41,9 +41,9 @@ do_action( 'mfields-plus-one-button', array(
 	'size'  => 'small',
 	'count' => 'true',
 	) );
+`
 
-
-
+`
 /**
  * Small button without count.
  */
@@ -51,9 +51,9 @@ do_action( 'mfields-plus-one-button', array(
 	'size'  => 'small',
 	'count' => 'false',
 	) );
+`
 
-
-
+`
 /**
  * Medium button with count.
  */
@@ -61,9 +61,9 @@ do_action( 'mfields-plus-one-button', array(
 	'size'  => 'medium',
 	'count' => 'true',
 	) );
+`
 
-
-
+`
 /**
  * Medium button without count.
  */
@@ -71,9 +71,9 @@ do_action( 'mfields-plus-one-button', array(
 	'size'  => 'medium',
 	'count' => 'false',
 	) );
+`
 
-
-
+`
 /**
  * Tall button.
  * Count is always displayed with this size.
@@ -82,9 +82,9 @@ do_action( 'mfields-plus-one-button', array(
 do_action( 'mfields-plus-one-button', array(
 	'size'  => 'tall',
 	) );
+`
 
-
-
+`
 /**
  * Medium button.
  * Count will be shown.
@@ -97,9 +97,9 @@ do_action( 'mfields-plus-one-button', array(
 	'count' => 'true',
 	'url'   => 'http://mfields.org/',
 	) );
+`
 
-
-
+`
 /**
  * Medium button.
  * Count will be shown.
@@ -131,6 +131,10 @@ Development of this plugin is hosted in a public repository on [Github](https://
 1. Click the "Plus One" link under the Settings section in the admin menu. There you be able to configure all available options.
 
 ==Changelog==
+
+= 0.1.2 =
+* Fix double button bug.
+* Add global option for button alignment.
 
 = 0.1.1 =
 * HTML attribute fix for "size" - dropping "data-" prefix.
