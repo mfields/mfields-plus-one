@@ -3,7 +3,7 @@
 Plugin Name:    Plus One Button
 Plugin URI:     http://wordpress.org/extend/plugins/plus-one-button/
 Description:    Add a +1 button to your WordPress powered website.
-Version:        0.1.1
+Version:        0.1.2
 Author:         Michael Fields
 Author URI:     http://wordpress.mfields.org/
 License:        GPLv2
@@ -23,7 +23,7 @@ Mfields_Plus_One::init();
 class Mfields_Plus_One {
 	static $domain        = 'mfields_plus_one';
 	static $url           = '';
-	static $version       = '0.1';
+	static $version       = '0.2';
 	static $settings_page = '';
 
 	/**
