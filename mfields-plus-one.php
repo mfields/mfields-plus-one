@@ -191,6 +191,10 @@ class Mfields_Plus_One {
 			return;
 		}
 
+		if ( is_singular() ) {
+			return;
+		}
+
 		foreach ( $settings['multiple'] as $location ) {
 			switch ( $location ) {
 				case 'before_content' :
