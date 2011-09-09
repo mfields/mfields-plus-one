@@ -221,7 +221,7 @@ class Mfields_Plus_One {
 	 *
 	 * Recognized Arguments
 	 *
-	 * count (string) - Either "true" or "false".
+	 * count (string) - Either "bubble" or "none".
 	 * markup (string) - Either "html" or "xhtml".
 	 * size (string) - Either "small", "medium", "standard" or "tall".
 	 * url (string) - The url to send to Google.
@@ -262,14 +262,8 @@ class Mfields_Plus_One {
 			$count = $args['count'];
 		}
 
-		$atts['xhtml']['count'] = $count;
-		$atts['html']['count'] = $count;
-
-		/*
-		This should be the correct attribute but does not seem to be working
-		at the moment. Revist in the future.
-		$atts['html']['data-count'] = $count;
-		*/
+		$atts['xhtml']['annotation'] = $count;
+		$atts['html']['data-annotation'] = $count;
 
 		$markup = $settings['markup'];
 		if ( isset( $args['markup'] ) && in_array( $args['markup'], array( 'html', 'xhtml' ) ) ) {
@@ -542,11 +536,11 @@ class Mfields_Plus_One {
 		$key = 'show_count';
 		$saved = self::get_setting( $key );
 
-		$id = 'mfields_plus_one_count_true';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'true', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="true" /> ' . __( 'Yes', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_count_bubble';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'bubble', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="bubble" /> ' . __( 'Yes', self::$domain ) . '</label>';
 
-		$id = 'mfields_plus_one_count_false';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'false', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="false" /> ' . __( 'No', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_count_none';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'none', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="none" /> ' . __( 'No', self::$domain ) . '</label>';
 	}
 
 	/**
@@ -563,7 +557,7 @@ class Mfields_Plus_One {
 			$id = 'mfields_plus_one_' . $key . '_' . $size;
 			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $size, $saved, false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_' . $key . '" name="mfields_plus_one[' . $key . ']" value="' . esc_attr( $size ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
-		$count = ( 'true' == self::get_setting( 'show_count' ) ) ? ' count' : '';
+		$count = ( 'bubble' == self::get_setting( 'show_count' ) ) ? ' count' : '';
 		print '<div id="' . esc_attr( self::$domain . '_preview' ) . '"><div class="' . esc_attr( $saved . $count ) . '"></div></div>';
 		print '</div>';
 	}
@@ -673,7 +667,7 @@ class Mfields_Plus_One {
 		$clean = array(
 			'alignment'  => 'none',
 			'language'   => '',
-			'show_count' => 'true',
+			'show_count' => 'bubble',
 			'size'       => '',
 			'singular'   => array(),
 			'markup'     => 'html',
@@ -681,8 +675,8 @@ class Mfields_Plus_One {
 			'post_types' => array(),
 			);
 
-		if ( isset( $dirty['show_count'] ) && 'false' == $dirty['show_count'] ) {
-			$clean['show_count'] = 'false';
+		if ( isset( $dirty['show_count'] ) && 'none' == $dirty['show_count'] ) {
+			$clean['show_count'] = 'none';
 		}
 
 		if ( isset( $dirty['markup'] ) && 'xhtml' == $dirty['markup'] ) {
@@ -746,7 +740,7 @@ class Mfields_Plus_One {
 			'markup'     => 'html',
 			'multiple'   => array(),
 			'post_types' => array( 'post', 'page' ),
-			'show_count' => 'true',
+			'show_count' => 'bubble',
 			'singular'   => array(),
 			'size'       => 'standard',
 			);
@@ -802,8 +796,8 @@ class Mfields_Plus_One {
 	 */
 	static function get_counts() {
 		return array(
-			'true'  => __( 'Yes', self::$domain ),
-			'false' => __( 'No', self::$domain ),
+			'bubble'  => __( 'Yes', self::$domain ),
+			'none' => __( 'No', self::$domain ),
 			);
 	}
 

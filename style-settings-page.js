@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ ) {
 	} );
 	$( '.mfields_plus_one_count' ).click( function() {
 		preview.removeClass( 'count' );
-		if ( 'true' == $( this ).val() ) {
+		if ( 'bubble' == $( this ).val() ) {
 			preview.addClass( 'count' );
 		}
 		console.log( 'taco: ' + $( this ).val() );
