@@ -3,7 +3,7 @@
 Plugin Name:    Plus One Button
 Plugin URI:     http://wordpress.org/extend/plugins/plus-one-button/
 Description:    Add a +1 button to your WordPress powered website.
-Version:        0.1.2
+Version:        0.1.3
 Author:         Michael Fields
 Author URI:     http://wordpress.mfields.org/
 License:        GPLv2
@@ -221,7 +221,7 @@ class Mfields_Plus_One {
 	 *
 	 * Recognized Arguments
 	 *
-	 * count (string) - Either "bubble" or "none".
+	 * count (string) - Either "true" or "false".
 	 * markup (string) - Either "html" or "xhtml".
 	 * size (string) - Either "small", "medium", "standard" or "tall".
 	 * url (string) - The url to send to Google.
@@ -261,6 +261,8 @@ class Mfields_Plus_One {
 		if ( isset( $args['count'] ) && array_key_exists( $args['count'], self::get_counts() ) ) {
 			$count = $args['count'];
 		}
+
+		$count = ( 'true' == $count ) ? 'bubble' : 'none';
 
 		$atts['xhtml']['annotation'] = $count;
 		$atts['html']['data-annotation'] = $count;
@@ -536,11 +538,11 @@ class Mfields_Plus_One {
 		$key = 'show_count';
 		$saved = self::get_setting( $key );
 
-		$id = 'mfields_plus_one_count_bubble';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'bubble', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="bubble" /> ' . __( 'Yes', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_count_true';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'true', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="true" /> ' . __( 'Yes', self::$domain ) . '</label>';
 
-		$id = 'mfields_plus_one_count_none';
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'none', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="none" /> ' . __( 'No', self::$domain ) . '</label>';
+		$id = 'mfields_plus_one_count_false';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $saved, 'false', false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_count" name="mfields_plus_one[' . $key . ']" value="false" /> ' . __( 'No', self::$domain ) . '</label>';
 	}
 
 	/**
@@ -557,7 +559,7 @@ class Mfields_Plus_One {
 			$id = 'mfields_plus_one_' . $key . '_' . $size;
 			print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . checked( $size, $saved, false ) . ' id="' . esc_attr( $id ) . '" type="radio" class="mfields_plus_one_' . $key . '" name="mfields_plus_one[' . $key . ']" value="' . esc_attr( $size ) . '" /> ' . esc_html( $label ) . '</label>';
 		}
-		$count = ( 'bubble' == self::get_setting( 'show_count' ) ) ? ' count' : '';
+		$count = ( 'true' == self::get_setting( 'show_count' ) ) ? ' count' : '';
 		print '<div id="' . esc_attr( self::$domain . '_preview' ) . '"><div class="' . esc_attr( $saved . $count ) . '"></div></div>';
 		print '</div>';
 	}
@@ -667,7 +669,7 @@ class Mfields_Plus_One {
 		$clean = array(
 			'alignment'  => 'none',
 			'language'   => '',
-			'show_count' => 'bubble',
+			'show_count' => 'true',
 			'size'       => '',
 			'singular'   => array(),
 			'markup'     => 'html',
@@ -675,8 +677,8 @@ class Mfields_Plus_One {
 			'post_types' => array(),
 			);
 
-		if ( isset( $dirty['show_count'] ) && 'none' == $dirty['show_count'] ) {
-			$clean['show_count'] = 'none';
+		if ( isset( $dirty['show_count'] ) && 'false' == $dirty['show_count'] ) {
+			$clean['show_count'] = 'false';
 		}
 
 		if ( isset( $dirty['markup'] ) && 'xhtml' == $dirty['markup'] ) {
@@ -740,7 +742,7 @@ class Mfields_Plus_One {
 			'markup'     => 'html',
 			'multiple'   => array(),
 			'post_types' => array( 'post', 'page' ),
-			'show_count' => 'bubble',
+			'show_count' => 'true',
 			'singular'   => array(),
 			'size'       => 'standard',
 			);
@@ -796,8 +798,8 @@ class Mfields_Plus_One {
 	 */
 	static function get_counts() {
 		return array(
-			'bubble'  => __( 'Yes', self::$domain ),
-			'none' => __( 'No', self::$domain ),
+			'true'  => __( 'Yes', self::$domain ),
+			'false' => __( 'No', self::$domain ),
 			);
 	}
 
