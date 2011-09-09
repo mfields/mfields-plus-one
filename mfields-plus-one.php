@@ -255,12 +255,7 @@ class Mfields_Plus_One {
 		}
 
 		$atts['xhtml']['size'] = $size;
-		$atts['html']['size'] = $size;
-		/*
-		This should be the correct attribute but does not seem to be working
-		at the moment. Revist in the future.
 		$atts['html']['data-size'] = $size;
-		*/
 
 		$count = $settings['show_count'];
 		if ( isset( $args['count'] ) && array_key_exists( $args['count'], self::get_counts() ) ) {
