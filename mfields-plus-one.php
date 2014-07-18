@@ -3,7 +3,7 @@
 Plugin Name:    Plus One Button
 Plugin URI:     http://wordpress.org/extend/plugins/plus-one-button/
 Description:    Add a +1 button to your WordPress powered website.
-Version:        0.1.2
+Version:        0.1.3
 Author:         Michael Fields
 Author URI:     http://wordpress.mfields.org/
 License:        GPLv2
@@ -255,26 +255,17 @@ class Mfields_Plus_One {
 		}
 
 		$atts['xhtml']['size'] = $size;
-		$atts['html']['size'] = $size;
-		/*
-		This should be the correct attribute but does not seem to be working
-		at the moment. Revist in the future.
 		$atts['html']['data-size'] = $size;
-		*/
 
 		$count = $settings['show_count'];
 		if ( isset( $args['count'] ) && array_key_exists( $args['count'], self::get_counts() ) ) {
 			$count = $args['count'];
 		}
 
-		$atts['xhtml']['count'] = $count;
-		$atts['html']['count'] = $count;
+		$count = ( 'true' == $count ) ? 'bubble' : 'none';
 
-		/*
-		This should be the correct attribute but does not seem to be working
-		at the moment. Revist in the future.
-		$atts['html']['data-count'] = $count;
-		*/
+		$atts['xhtml']['annotation'] = $count;
+		$atts['html']['data-annotation'] = $count;
 
 		$markup = $settings['markup'];
 		if ( isset( $args['markup'] ) && in_array( $args['markup'], array( 'html', 'xhtml' ) ) ) {
